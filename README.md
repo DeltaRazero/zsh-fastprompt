@@ -80,7 +80,7 @@ All prompt modules accept formatting flags derived from the core `_fastprompt_fo
   * `-sticky` : Disables trailing spaces after the item.
   * `-empty` : Allows printing empty values.
 
-> [!INFO]
+> [!NOTE]
 > For the \[string\] value that is eventually passed to `fastprompt_add_raw` and the color string values (e.g. `-fg`), you can use the `value1^value2` syntax (e.g., `-fg "69^197"` or `"user^root"`) to dynamically display the first value for standard users and the second value when running with elevated privileges (`#`).
 
 ## Examples
