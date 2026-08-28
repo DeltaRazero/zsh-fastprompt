@@ -406,9 +406,11 @@ fastprompt_add_git() {
       fi
     fi
     if [[ -f "$dotgit/index" ]]; then
-      local index_mtime=$(zstat +mtime "$dotgit/INDEX")
+      local index_mtime objects_mtime
+      zstat +mtime -A index_mtime   "$dotgit/index"
+      zstat +mtime -A objects_mtime "$dotgit/objects"
 
-      if [[ $index_mtime -gt ${_FPROMPT_GIT_INDEX_LAST_CHECKED[$dotgit]:-0} ]]; then
+      if [[ $index_mtime -gt ${_FPROMPT_GIT_INDEX_LAST_CHECKED[$dotgit]:-0} || $objects_mtime -gt ${_FPROMPT_GIT_INDEX_LAST_CHECKED[$dotgit]:-0} ]]; then
         _FPROMPT_GIT_INDEX_LAST_CHECKED[$dotgit]="$index_mtime"
         local git_status_stdout="$(git status -s)"
         _fprompt_git_local_status_stdout=""
