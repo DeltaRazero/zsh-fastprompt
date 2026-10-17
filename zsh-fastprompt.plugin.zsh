@@ -33,7 +33,16 @@ fastprompt_init() {
   typeset -gA _FPROMPT_GLOBAL
   _FPROMPT_GLOBAL[is_elevated]=""
 
-  add-zsh-hook precmd _fastprompt_update_privilege_state
+  # If running under Windows, ZSH doesn't recognize when it's running under
+  # elevated privileges. Since the privileges can't time out under the same
+  # process, we can permanently set the elevated flag.
+  if [[ "$(uname -s)" =~ ^.*_NT-[0-9]+.* ]]; then
+    net session >nul 2>&1
+    (( $? == 0 )) && _FPROMPT_GLOBAL[is_elevated]="1"
+  else
+    add-zsh-hook precmd _fastprompt_update_privilege_state
+  fi
+
   add-zsh-hook precmd _fastprompt_dynamic_precmd
 }
 
