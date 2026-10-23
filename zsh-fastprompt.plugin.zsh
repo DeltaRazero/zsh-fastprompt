@@ -428,9 +428,12 @@ fastprompt_add_git() {
         _fprompt_git_local_status_stdout=""
 
         # Staged changes.
-        [[ ! $_fprompt_git_local_status_stdout && $git_status_stdout =~ "^[MTADRCU]"  ]] && _fprompt_git_local_status_stdout="+"
-        # Tracked and modified.
-        [[ ! $_fprompt_git_local_status_stdout && $git_status_stdout =~ "^ [MTADRCU]" ]] && _fprompt_git_local_status_stdout="*"
+        if [[ ! $_fprompt_git_local_status_stdout && $git_status_stdout =~ "^[MTADRCU]"  ]]; then
+          _fprompt_git_local_status_stdout="+"
+        else
+          # Tracked and modified.
+          [[ ! $_fprompt_git_local_status_stdout && $git_status_stdout =~ "^ [MTADRCU]" ]] && _fprompt_git_local_status_stdout="*"
+        fi
         return
       fi
     fi
