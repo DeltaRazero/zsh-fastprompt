@@ -396,10 +396,13 @@ fastprompt_add_git() {
     # Read the first line of .git/HEAD directly into a variable.
     local head
     read -r head < $dotgit/HEAD 2>/dev/null || return
-    # Ensure we are on a branch (not in detached HEAD state).
-    [[ $head == "ref: refs/heads/"* ]] || return
-    # Strip the prefix using native parameter expansion, and echo the branch.
-    echo "${head#ref: refs/heads/}"
+    # Check if we're on a branch or in detached HEAD state.
+    if [[ $head == "ref: refs/heads/"* ]]; then
+      # Strip the prefix using native parameter expansion, and echo the branch.
+      echo "${head#ref: refs/heads/}"
+    else
+      echo "HEAD"
+    fi
   }
 
   # Prints local tracking status.
